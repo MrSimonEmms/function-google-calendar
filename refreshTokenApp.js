@@ -18,13 +18,13 @@ passport.use(new Google({
   clientID: process.env.CLIENT_ID,
   clientSecret: process.env.CLIENT_SECRET,
   callbackURL: 'http://localhost:3000/auth/callback',
-  skipUserProfile: true,
+  skipUserProfile: true
 }, (accessToken, refreshToken, profile, done) => {
   console.log({
     accessToken,
     refreshToken,
     profile,
-    done,
+    done
   });
 
   done();
@@ -36,13 +36,13 @@ app.get('/auth/google', passport.authenticate('google', {
   accessType: 'offline',
   prompt: 'consent',
   scope: [
-    'https://www.googleapis.com/auth/calendar',
+    'https://www.googleapis.com/auth/calendar'
   ]
 }));
 
 app.get('/auth/callback', passport.authenticate('google', {
   failureRedirect: '/'
-}), function(req, res) {
+}), function (req, res) {
   res.redirect('/');
 });
 
