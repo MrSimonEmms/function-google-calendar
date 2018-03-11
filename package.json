@@ -1,6 +1,6 @@
 {
   "name": "function-google-calendar",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "description": "OpenFaaS tasks for accessing a Google Calendar",
   "main": "./function/handler.js",
   "scripts": {
@@ -17,6 +17,7 @@
   },
   "devDependencies": {
     "express": "^4.16.2",
+    "json": "^9.0.6",
     "passport": "^0.4.0",
     "passport-google-oauth": "^1.0.0",
     "semistandard": "^12.0.1"
