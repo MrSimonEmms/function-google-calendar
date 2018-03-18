@@ -40,7 +40,7 @@ module.exports = class GCal {
       .then(result => result.access_token);
   }
 
-  deleteCalendarEvent(opts) {
+  deleteCalendarEvent (opts) {
     return this.exchangeRefreshToken()
       .then(token => {
         const calendarId = opts.calendarId;
@@ -65,7 +65,7 @@ module.exports = class GCal {
 
         return request(config)
           .then(() => ({
-            eventId,
+            eventId
           }));
       });
   }
@@ -85,12 +85,12 @@ module.exports = class GCal {
           alwaysIncludeEmail: false,
           orderBy: 'startTime',
           showDeleted: false,
-          singleEvents: true,
+          singleEvents: true
         });
 
         const dates = [
           'timeMin',
-          'timeMax',
+          'timeMax'
         ];
 
         dates.forEach(item => {

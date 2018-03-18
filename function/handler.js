@@ -24,7 +24,7 @@ function secretOrEnvvar (secretFile, envvar) {
 
 const config = {
   clientId: secretOrEnvvar('/run/secrets/google_calendar_client_id', 'CLIENT_ID'),
-  clientSecret: secretOrEnvvar('/run/secrets/google_calendar_client_secret', 'CLIENT_SECRET'),
+  clientSecret: secretOrEnvvar('/run/secrets/google_calendar_client_secret', 'CLIENT_SECRET')
 };
 
 module.exports = input => Promise
