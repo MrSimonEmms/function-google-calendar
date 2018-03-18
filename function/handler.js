@@ -3,6 +3,7 @@
  */
 
 /* Node modules */
+const fs = require('fs');
 
 /* Third-party modules */
 const yml = require('js-yaml');
@@ -10,9 +11,20 @@ const yml = require('js-yaml');
 /* Files */
 const GCal = require('./calendar');
 
+function secretOrEnvvar (secretFile, envvar) {
+  let value;
+  try {
+    value = fs.readFileSync(secretFile, 'utf8');
+  } catch (err) {
+    value = process.env[envvar];
+  }
+
+  return value;
+}
+
 const config = {
-  clientId: process.env.CLIENT_ID,
-  clientSecret: process.env.CLIENT_SECRET
+  clientId: secretOrEnvvar('/run/secrets/google_calendar_client_id', 'CLIENT_ID'),
+  clientSecret: secretOrEnvvar('/run/secrets/google_calendar_client_secret', 'CLIENT_SECRET'),
 };
 
 module.exports = input => Promise
