@@ -6,6 +6,7 @@
 const qs = require('querystring');
 
 /* Third-party modules */
+const { _ } = require('lodash');
 const request = require('request-promise-native');
 
 /* Files */
@@ -39,23 +40,70 @@ module.exports = class GCal {
       .then(result => result.access_token);
   }
 
-  getCalendarEvents (calendarId, timeMin = null, timeMax = null) {
+  deleteCalendarEvent(opts) {
     return this.exchangeRefreshToken()
       .then(token => {
-        const params = {
-          alwaysIncludeEmail: false,
-          orderBy: 'startTime',
-          singleEvents: true
+        const calendarId = opts.calendarId;
+        const eventId = opts.eventId;
+
+        if (!calendarId) {
+          throw new Error('calendarId is a required option');
+        }
+
+        if (!eventId) {
+          throw new Error('eventId is a required option');
+        }
+
+        const config = {
+          url: `https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events/${eventId}`,
+          method: 'DELETE',
+          headers: {
+            authorization: `Bearer ${token}`
+          },
+          json: true
         };
 
-        if (timeMin && timeMax) {
-          params.timeMin = timeMin;
-          params.timeMax = timeMax;
+        return request(config)
+          .then(() => ({
+            eventId,
+          }));
+      });
+  }
+
+  getCalendarEvents (opts) {
+    return this.exchangeRefreshToken()
+      .then(token => {
+        const calendarId = opts.calendarId;
+
+        if (!calendarId) {
+          throw new Error('calendarId is a required option');
         }
+
+        delete opts.calendarId;
+
+        const params = _.defaults(opts, {
+          alwaysIncludeEmail: false,
+          orderBy: 'startTime',
+          showDeleted: false,
+          singleEvents: true,
+        });
+
+        const dates = [
+          'timeMin',
+          'timeMax',
+        ];
+
+        dates.forEach(item => {
+          try {
+            params[item] = params[item].toISOString();
+          } catch (err) {
+            delete params[item];
+          }
+        });
 
         const qsParams = qs.stringify(params);
 
-        const opts = {
+        const config = {
           url: `https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events?${qsParams}`,
           method: 'GET',
           headers: {
@@ -64,8 +112,8 @@ module.exports = class GCal {
           json: true
         };
 
-        return request(opts)
-          .then(({ items = [] }) => items);
-      });
+        return request(config);
+      })
+      .then(({ items = [] }) => items);
   }
 };

@@ -25,9 +25,5 @@ module.exports = input => Promise
 
     const cal = new GCal(config.clientId, config.clientSecret, refreshToken);
 
-    const methodArgs = args
-      .split(',')
-      .filter(value => !!value);
-
-    return cal[method](...methodArgs);
+    return cal[method](args);
   });
