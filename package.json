@@ -1,6 +1,6 @@
 {
   "name": "function-google-calendar",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "OpenFaaS tasks for accessing a Google Calendar",
   "main": "./function/handler.js",
   "scripts": {
