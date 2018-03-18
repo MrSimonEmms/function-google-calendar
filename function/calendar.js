@@ -88,19 +88,6 @@ module.exports = class GCal {
           singleEvents: true
         });
 
-        const dates = [
-          'timeMin',
-          'timeMax'
-        ];
-
-        dates.forEach(item => {
-          try {
-            params[item] = params[item].toISOString();
-          } catch (err) {
-            delete params[item];
-          }
-        });
-
         const qsParams = qs.stringify(params);
 
         const config = {
