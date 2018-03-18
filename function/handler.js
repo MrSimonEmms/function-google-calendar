@@ -33,7 +33,7 @@ module.exports = input => Promise
     /* JSON is valid YAML */
     const inputArgs = yml.safeLoad(input);
 
-    const { args = '', method, refreshToken } = inputArgs;
+    const { args = {}, method, refreshToken } = inputArgs;
 
     const cal = new GCal(config.clientId, config.clientSecret, refreshToken);
 
